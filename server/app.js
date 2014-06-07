@@ -1,8 +1,12 @@
 // Load modules.
-var twilio = require('twilio'),
+var express = require('express'),
+    body_parser = require('body-parser'),
+    twilio = require('twilio'),
     constants = require('./../../constants');
 
-console.log(constants.twilio_sid, constants.auth_token);
+// Start new express app.
+var app = express();
+var port = 8000;
 
 // Create new REST API client to make authenticated requests against the twilio back end.
 var client = new twilio.RestClient(constants.twilio_sid, constants.auth_token);

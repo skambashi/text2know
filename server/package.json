@@ -1,0 +1,12 @@
+{
+  "name": "text2pay",
+  "description": "SMS, meet internet.",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "4.4.0",
+    "twilio": "1.6.0",
+    "body-parser": "*",
+    "mongodb": "1.4.5",
+    "mongoose": "3.8.12"
+  }
+}
