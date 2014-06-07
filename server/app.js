@@ -1,14 +1,17 @@
 // Load modules.
-var twilio = require('twilio');
+var twilio = require('twilio'),
+    constants = require('./../../constants');
+
+console.log(constants.twilio_sid, constants.auth_token);
 
 // Create new REST API client to make authenticated requests against the twilio back end.
-var client = new twilio.RestClient('accountSID','authToken');
+var client = new twilio.RestClient(constants.twilio_sid, constants.auth_token);
 
 // Pass in parameters to the REST API using an object literal notation.
 // The REST client will handle authentication and response serialization for you.
 client.sms.messages.create({
-  to: 'MYNUMBER',
-  from: 'TWILIONUMBER',
+  to: constants.to_phone,
+  from: constants.from_phone,
   body:'Hello World! Testing twilio and node.js!'
 }, function(error, message){
   // The HTTP request to Twilio will run asynchronously.
