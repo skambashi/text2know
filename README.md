@@ -1,4 +1,6 @@
-text2know
+text2know	
 =========
 
-Retrieve information from the internet through SMS.
+SMS, meet internet.
+
+Pushed to heroku. See changes at http://tranquil-forest-6068.herokuapp.com/
