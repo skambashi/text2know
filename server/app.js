@@ -3,7 +3,7 @@ require('daemon')();
 
 // Initialize dependancies.
 var express = require('express'),
-    Use bunyan to log debug/error messages in JSON format
+    // Use bunyan to log debug/error messages in JSON format.
     log = require('bunyan').createLogger(
       {
         name: 'text2know',
