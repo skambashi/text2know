@@ -4,21 +4,20 @@
 // Initialize dependancies
 var express = require('express'),
     // Use bunyan to log debug/error messages in JSON format
-    log = require('bunyan').createLogger(
-      {
-        name: 'text2know',
-        streams: [{
-          level: 'debug',
-          path: '/home/ubuntu/text2know/server/logs/text2know.log'
-        },
-        {
-          level: 'error',
-          path: '/home/ubuntu/text2know/server/logs/text2know_error.log'
-        }]
-      }
-    ),
-    // textHandler = require('./helpers/textHandler'),
-    // hg = require('./routes/html_gen'),
+    // log = require('bunyan').createLogger(
+    //   {
+    //     name: 'text2know',
+    //     streams: [{
+    //       level: 'debug',
+    //       path: '/home/ubuntu/text2know/server/logs/text2know.log'
+    //     },
+    //     {
+    //       level: 'error',
+    //       path: '/home/ubuntu/text2know/server/logs/text2know_error.log'
+    //     }]
+    //   }
+    // ),
+    hg = require('./views/html_gen'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser');
 
@@ -35,10 +34,11 @@ app.post('/sms', function(request, response){
 });
 
 /**************************** WWW ROUTES FROM HERE ***********************************/
-// app.get('/', function(request, response) {
-//   log.debug('[WWW] get request: \'/\'');
-//   hg.genHtml(response, 'index.html');
-// });
+app.get('/', function(request, response) {
+  console.log('[WWW] GET request: \'/\'');
+  // log.debug('[WWW] get request: \'/\'');
+  hg.genHtml(response, 'index.html');
+});
 
 /**************************** CSS/JS ROUTES FROM HERE ********************************/
 
