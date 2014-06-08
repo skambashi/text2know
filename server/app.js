@@ -30,7 +30,8 @@ var port = 80;
 app.use(bodyParser.urlencoded({extended : false}));
 
 app.post('/sms', function(request, response){
-  log.debug('[SMS] Post request received:\n', request);
+  console.log('[SMS] POST request received:\n', request.body);
+  //log.debug('[SMS] Post request received:\n', request);
 });
 
 /**************************** WWW ROUTES FROM HERE ***********************************/
@@ -56,5 +57,6 @@ app.post('/sms', function(request, response){
 //   hg.genImage(response, request.params.file);
 // });
 
-log.debug('[HTTP] Creating HTTP Server on Port ' + port.toString());
+console.log('[HTTP] Creating HTTP Server on Port', port.toString());
+//log.debug('[HTTP] Creating HTTP Server on Port ' + port.toString());
 app.listen(port);
