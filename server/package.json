@@ -9,7 +9,8 @@
     "mongodb": "1.4.5",
     "mongoose": "3.8.12",
     "bunyan": "0.23.1",
-    "twilio": "1.6.0"
+    "twilio": "1.6.0",
+    "daemon": "*"
   },
   "author": "skambashi",
   "license": "MIT"
