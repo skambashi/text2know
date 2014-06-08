@@ -36,26 +36,29 @@ app.post('/sms', function(request, response){
 /**************************** WWW ROUTES FROM HERE ***********************************/
 app.get('/', function(request, response) {
   console.log('[WWW] GET request: \'/\'');
-  // log.debug('[WWW] get request: \'/\'');
+  // log.debug('[WWW] GET request: \'/\'');
   hg.genHtml(response, 'index.html');
 });
 
 /**************************** CSS/JS ROUTES FROM HERE ********************************/
 
-// app.get('/public/css/:file', function(request, response) {
-//   log.debug('[CSS] get request: \'/public/css/%s\'', request.params.file);
-//   hg.genCss(response, request.params.file);
-// });
+app.get('/static/css/:file', function(request, response) {
+  console.log('[CSS] GET request: \'/static/css/%s\'', request.params.file);
+  // log.debug('[CSS] GET request: \'/static/css/%s\'', request.params.file);
+  hg.genCss(response, request.params.file);
+});
 
-// app.get('/public/js/:file', function(request, response) {
-//   log.debug('[JS] get request: \'/public/js/%s\'', request.params.file);
-//   hg.genJs(response, request.params.file);
-// });
+app.get('/static/js/:file', function(request, response) {
+  console.log('[JS] GET request: \'/static/js/%s\'', request.params.file);
+  // log.debug('[JS] GET request: \'/static/js/%s\'', request.params.file);
+  hg.genJs(response, request.params.file);
+});
 
-// app.get('/public/img/:file', function(request, response) {
-//   log.debug('[IMAGE] get request: \'/public/img/%s\'', request.params.file);
-//   hg.genImage(response, request.params.file);
-// });
+app.get('/static/img/:file', function(request, response) {
+  console.log('[IMAGE] GET request: \'/static/img/%s\'', request.params.file);
+  // log.debug('[IMAGE] GET request: \'/static/img/%s\'', request.params.file);
+  hg.genImage(response, request.params.file);
+});
 
 console.log('[HTTP] Creating HTTP Server on Port', port.toString());
 //log.debug('[HTTP] Creating HTTP Server on Port ' + port.toString());

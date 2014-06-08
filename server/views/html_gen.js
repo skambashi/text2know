@@ -1,7 +1,7 @@
 var fs = require('fs');
 
 exports.genImage = function(response, file) {
-  console.log("[IMAGE] Loading \'/public/img/%s\'", file);
+  console.log("[IMAGE] Loading \'/static/img/%s\'", file);
 
   fs.readFile('static/img/' + file, function(err, img) {
     if (err) {
@@ -17,7 +17,7 @@ exports.genImage = function(response, file) {
 }
 
 exports.genCss = function(response, file) {
-  console.log("[CSS] Loading \'/public/css/%s\'", file);
+  console.log("[CSS] Loading \'/static/css/%s\'", file);
 
   fs.readFile('static/css/' + file, function(err, css) {   if (err) {
       response.writeHeader(404);
@@ -32,7 +32,7 @@ exports.genCss = function(response, file) {
 }
 
 exports.genJs = function(response, file) {
-  console.log("[JS] Loading \'/public/js/%s\'", file);
+  console.log("[JS] Loading \'/static/js/%s\'", file);
 
   fs.readFile('static/js/' + file, function(err, js) {
     if (err) {
