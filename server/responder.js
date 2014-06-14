@@ -37,7 +37,7 @@ exports.google = function(request, response, next){
     var query = tokens.slice(1, -1).join(' ');
     var results = tokens[tokens.length - 1];
     console.log('[DEBUG] Google', results, 'results for', query);
-    var body = 'Google', results, 'results for', query
+    var body = 'Google ' + results + ' results for ' + query;
 
     client.messages.create({
       to: request.body.From,
