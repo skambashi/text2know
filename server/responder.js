@@ -29,7 +29,7 @@ exports.help = function(request, response, next){
       from: constants.from_phone,
       body: body, 
     }, function(err, message) {
-      console.log('[ERROR]', err.red);
+      console.log('[ERROR]', err);
       // log.error(err);
       client.messages.create({
         to: request.body.From,
@@ -52,7 +52,7 @@ exports.invalid = function(request, response){
     from: constants.from_phone,
     body: body, 
   }, function(err, message) {
-    console.log('[ERROR]', err.red);
+    console.log('[ERROR]', err);
     // log.error(err);
     client.messages.create({
       to: request.body.From,
