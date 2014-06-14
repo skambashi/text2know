@@ -19,14 +19,26 @@ var twilio = require('twilio'),
 exports.help = function(request, response, next){
   var tokens = request.body.Body.split(" ");
   console.log('[TEXT] \'cmds\' detected:'.green, request.body.Body.green);
-  // log.debug('[TEXT] Inbound SMS detected!');
+  // log.debug('[TEXT] \'cmds\' detected:', request.body.Body);
   if (tokens[0].toLowerCase() == 'cmds'){
-    var twiml = new twilio.TwimlResponse();
-    twiml.message('Commands:\n'
+    var body = 'Commands:\n'
         + 'cmds | Returns a list of available commands.\n'
-        + 'TODO | Add more commands.'
-      );
-    response.send(twiml.toString());
+        + 'TODO | Add more commands.';
+    client.messages.create({
+      to: request.body.From,
+      from: constants.from_phone,
+      body: body, 
+    }, function(err, message) {
+      console.log('[ERROR]', err.red);
+      // log.error(err);
+      client.messages.create({
+        to: request.body.From,
+        from: constants.from_phone,
+        body: 'Command failed. GG.',
+      }, function(err, message) {
+        console.log('[ERROR] Command failed. GG. NO RE.'.red);
+      });
+    });
   } else {
     next();
   }
@@ -34,7 +46,20 @@ exports.help = function(request, response, next){
 
 exports.invalid = function(request, response){
   console.log('[TEXT] \'invalid\' detected:'.red, request.body.Body.red);
-  var twiml = new twilio.TwimlResponse();
-  twiml.message('Invalid input: ' + request.body.Body + '.\nPlease type \'cmds\' to get list of available commands.');
-  response.send(twiml.toString());
+  var body = 'Invalid input: ' + request.body.Body + '.\nPlease type \'cmds\' to get list of available commands.'
+  client.messages.create({
+    to: request.body.From,
+    from: constants.from_phone,
+    body: body, 
+  }, function(err, message) {
+    console.log('[ERROR]', err.red);
+    // log.error(err);
+    client.messages.create({
+      to: request.body.From,
+      from: constants.from_phone,
+      body: 'Command failed. GG.',
+    }, function(err, message) {
+      console.log('[ERROR] Command failed. GG. NO RE.'.red);
+    });
+  });
 }
