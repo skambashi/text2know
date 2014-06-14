@@ -25,7 +25,7 @@ exports.help = function(request, response, next){
         + 'cmds | Returns a list of available commands.\n'
         + 'TODO | Add more commands.';
     client.messages.create({
-      console.log('[DEBUG] TEXT FROM:',request.body.From)
+      console.log('[DEBUG] TEXT FROM:',request.body.From);
       to: request.body.From,
       from: constants.from_phone,
       body: body, 
