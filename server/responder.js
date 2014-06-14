@@ -9,7 +9,7 @@ exports.help = function(request, response, next){
   console.log('[TEXT] From:'.green,request.body.From.green);
   console.log('[TEXT] Body:'.green,request.body.Body.green);
 
-  console.log('[TEXT] \'help\''.green);
+  console.log('[TEXT] \'cmds\''.green);
 
   var tokens = request.body.Body.split(" ");
 
@@ -35,9 +35,9 @@ exports.google = function(request, response, next){
   var tokens = request.body.Body.split(" ");
   if (tokens[0].toLowerCase() == 'google'){
     var query = tokens.slice(1, -1).join(' ');
-    var results = tokens[-1];
-    console.log('Google', results, 'results for', query);
-    var body = ''
+    var results = tokens[tokens.length - 1];
+    console.log('[DEBUG] Google', results, 'results for', query);
+    var body = 'Google', results, 'results for', query
 
     client.messages.create({
       to: request.body.From,
