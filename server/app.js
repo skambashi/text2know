@@ -17,10 +17,11 @@ var express = require('express'),
     //     }]
     //   }
     // ),
-    hg = require('./views/html_gen'),
+    hg = require('./html_gen'),
     mongoose = require('mongoose'),
-    responder = require('./responder')
-    bodyParser = require('body-parser');
+    responder = require('./responder'),
+    bodyParser = require('body-parser'),
+    colors = require('colors');
 
 // Create an express web app to run on port 80.
 var app = express();
@@ -35,7 +36,7 @@ app.post('/sms',
 
 /**************************** WWW ROUTES FROM HERE ***********************************/
 app.get('/', function(request, response) {
-  console.log('[WWW] GET request: \'/\'');
+  console.log('[WWW] GET request: \'/\''.yellow);
   // log.debug('[WWW] GET request: \'/\'');
   hg.genHtml(response, 'index.html');
 });
@@ -43,25 +44,25 @@ app.get('/', function(request, response) {
 /**************************** CSS/JS ROUTES FROM HERE ********************************/
 
 app.get('/static/css/:file', function(request, response) {
-  console.log('[CSS] GET request: \'/static/css/%s\'', request.params.file);
+  console.log('[CSS] GET request: \'/static/css/%s\''.yellow, request.params.file.yellow);
   // log.debug('[CSS] GET request: \'/static/css/%s\'', request.params.file);
   hg.genCss(response, request.params.file);
 });
 
 app.get('/static/js/:file', function(request, response) {
-  console.log('[JS] GET request: \'/static/js/%s\'', request.params.file);
+  console.log('[JS] GET request: \'/static/js/%s\''.yellow, request.params.file.yellow);
   // log.debug('[JS] GET request: \'/static/js/%s\'', request.params.file);
   hg.genJs(response, request.params.file);
 });
 
 app.get('/static/img/:file', function(request, response) {
-  console.log('[IMAGE] GET request: \'/static/img/%s\'', request.params.file);
+  console.log('[IMAGE] GET request: \'/static/img/%s\''.yellow, request.params.file.yellow);
   // log.debug('[IMAGE] GET request: \'/static/img/%s\'', request.params.file);
   hg.genImage(response, request.params.file);
 });
 
 /**************************** STARTING SERVER ****************************************/
 
-console.log('[HTTP] Creating HTTP Server on Port ' + port.toString());
+console.log(('[HTTP] Creating HTTP Server on Port ' + port.toString()).green);
 // log.debug('[HTTP] Creating HTTP Server on Port ' + port.toString());
 app.listen(port);

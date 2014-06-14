@@ -13,11 +13,12 @@ var twilio = require('twilio'),
     //   }
     // ),
     constants = require('./../../constants'),
-    client = require('twilio')(constants.twilio_sid, constants.auth_token);
+    client = require('twilio')(constants.twilio_sid, constants.auth_token),
+    colors = require('colors');
 
 exports.returnInput = function(request, response){
   // var tokens = request.body.Body.split(" ");
-  console.log('[TEXT] Inbound SMS detected!');
+  console.log('[TEXT] Inbound SMS detected:'.green, request.body.Body.green);
   // log.debug('[TEXT] Inbound SMS detected!');
   var twiml = new twilio.TwimlResponse();
   twiml.message('Server received your message successfully: ' + request.body.Body);
