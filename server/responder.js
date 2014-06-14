@@ -28,16 +28,6 @@ exports.help = function(request, response, next){
       to: request.body.From,
       from: constants.from_phone,
       body: body, 
-    }, function(err, message) {
-      console.log('[ERROR]', err);
-      // log.error(err);
-      client.messages.create({
-        to: request.body.From,
-        from: constants.from_phone,
-        body: 'Command failed. GG.',
-      }, function(err, message) {
-        console.log('[ERROR] Command failed. GG. NO RE.'.red);
-      });
     });
   } else {
     next();
@@ -51,15 +41,5 @@ exports.invalid = function(request, response){
     to: request.body.From,
     from: constants.from_phone,
     body: body, 
-  }, function(err, message) {
-    console.log('[ERROR]', err);
-    // log.error(err);
-    client.messages.create({
-      to: request.body.From,
-      from: constants.from_phone,
-      body: 'Command failed. GG.',
-    }, function(err, message) {
-      console.log('[ERROR] Command failed. GG. NO RE.'.red);
-    });
   });
 }
