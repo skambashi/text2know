@@ -1,17 +1,4 @@
 var twilio = require('twilio'),
-    // log = require('bunyan').createLogger(
-    //   {
-    //     name: 'text2pay',
-    //     streams: [{
-    //       level: 'debug',
-    //       path: '/home/ubuntu/text2know/server/logs/text2know.log'
-    //     },
-    //     {
-    //       level: 'error',
-    //       path: '/home/ubuntu/text2know/server/logs/text2know_error.log'
-    //     }]
-    //   }
-    // ),
     constants = require('./../../constants'),
     client = require('twilio')(constants.twilio_sid, constants.auth_token),
     reddit = require('./apps/google'),
@@ -29,22 +16,13 @@ exports.help = function(request, response, next){
   if (tokens[0].toLowerCase() == 'cmds'){
     var body = 'Commands:\n'
         + 'cmds | Returns a list of available commands.\n'
+        + 'google <query> <amount> | Will return <amount> results from google search of <query>.\n'
         + 'TODO | Add more commands.';
 
     client.messages.create({
       to: request.body.From,
       from: constants.from_phone,
       body: body, 
-    }, function(err, message) {
-      console.log('[ERROR]', err);
-      // log.error(err);
-      client.messages.create({
-        to: request.body.From,
-        from: constants.from_phone,
-        body: 'Command failed. GG.',
-      }, function(err, message) {
-        console.log('[ERROR] Command failed. GG. NO RE.'.red);
-      });
     });
   } else {
     next();
@@ -54,6 +32,21 @@ exports.help = function(request, response, next){
 exports.google = function(request, response, next){
   console.log('[TEXT] \'google\''.green);
 
+  var tokens = request.body.Body.split(" ");
+  if (tokens[0].toLowerCase() == 'google'){
+    var query = tokens.slice(1, -1).join(' ');
+    var results = tokens[-1];
+    console.log('Google', results, 'results for', query);
+    var body = ''
+
+    client.messages.create({
+      to: request.body.From,
+      from: constants.from_phone,
+      body: body, 
+    });
+  } else {
+    next();
+  }
 }
 
 exports.invalid = function(request, response){
@@ -63,15 +56,5 @@ exports.invalid = function(request, response){
     to: request.body.From,
     from: constants.from_phone,
     body: body, 
-  }, function(err, message) {
-    console.log('[ERROR]', err);
-    // log.error(err);
-    client.messages.create({
-      to: request.body.From,
-      from: constants.from_phone,
-      body: 'Command failed. GG.',
-    }, function(err, message) {
-      console.log('[ERROR] Command failed. GG. NO RE.'.red);
-    });
   });
 }
