@@ -16,11 +16,25 @@ var twilio = require('twilio'),
     client = require('twilio')(constants.twilio_sid, constants.auth_token),
     colors = require('colors');
 
-exports.returnInput = function(request, response){
-  // var tokens = request.body.Body.split(" ");
-  console.log('[TEXT] Inbound SMS detected:'.green, request.body.Body.green);
+exports.help = function(request, response, next){
+  var tokens = request.body.Body.split(" ");
+  console.log('[TEXT] \'help\' detected:'.green, request.body.Body.green);
   // log.debug('[TEXT] Inbound SMS detected!');
+  if (tokens[0].toLowerCase() == 'help'){
+    var twiml = new twilio.TwimlResponse();
+    twiml.message('Commands:\n'
+        + 'help | Returns a list of available commands.\n'
+        + 'TODO | Add more commands.'
+      );
+    response.send(twiml.toString());
+  } else {
+    next();
+  }
+}
+
+exports.invalid = function(request, response){
+  console.log('[TEXT] \'invalid\' detected:'.red, request.body.Body.red);
   var twiml = new twilio.TwimlResponse();
-  twiml.message('Server received your message successfully: ' + request.body.Body);
+  twiml.message('Invalid input: ' + request.body.Body + '.\nPlease type \'help\' to get list of available commands.');
   response.send(twiml.toString());
 }

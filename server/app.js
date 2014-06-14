@@ -31,7 +31,8 @@ var port = 80;
 app.use(bodyParser.urlencoded({extended : false}));
 
 app.post('/sms',
-  responder.returnInput
+  responder.help,
+  responder.invalid
 );
 
 /**************************** WWW ROUTES FROM HERE ***********************************/
