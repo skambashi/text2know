@@ -19,13 +19,13 @@ var twilio = require('twilio'),
 exports.help = function(request, response, next){
   var tokens = request.body.Body.split(" ");
   console.log('[TEXT] \'cmds\' detected:'.green, request.body.Body.green);
+  console.log('[DEBUG] TEXT FROM:',request.body.From);
   // log.debug('[TEXT] \'cmds\' detected:', request.body.Body);
   if (tokens[0].toLowerCase() == 'cmds'){
     var body = 'Commands:\n'
         + 'cmds | Returns a list of available commands.\n'
         + 'TODO | Add more commands.';
     client.messages.create({
-      console.log('[DEBUG] TEXT FROM:',request.body.From);
       to: request.body.From,
       from: constants.from_phone,
       body: body, 
