@@ -25,6 +25,7 @@ exports.help = function(request, response, next){
         + 'cmds | Returns a list of available commands.\n'
         + 'TODO | Add more commands.';
     client.messages.create({
+      console.log('[DEBUG] TEXT FROM:',request.body.From)
       to: request.body.From,
       from: constants.from_phone,
       body: body, 
@@ -36,7 +37,7 @@ exports.help = function(request, response, next){
 
 exports.invalid = function(request, response){
   console.log('[TEXT] \'invalid\' detected:'.red, request.body.Body.red);
-  var body = 'Invalid input: ' + request.body.Body + '.\nPlease type \'cmds\' to get list of available commands.'
+  var body = 'Invalid input: ' + request.body.Body + '.\nPlease text \'cmds\' to get list of available commands.'
   client.messages.create({
     to: request.body.From,
     from: constants.from_phone,
