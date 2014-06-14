@@ -15,9 +15,9 @@ exports.help = function(request, response, next){
 
   if (tokens[0].toLowerCase() == 'cmds'){
     var body = 'Commands:\n'
-        + 'cmds | Returns a list of available commands.\n'
-        + 'google <query> <amount> | Will return <amount> results from google search of <query>.\n'
-        + 'TODO | Add more commands.';
+        + 'cmds || Returns a list of available commands.\n'
+        + 'google <query> <amount> || Returns <amount> results from google search of <query>.\n'
+        + 'TODO || Add more commands.';
 
     client.messages.create({
       to: request.body.From,
