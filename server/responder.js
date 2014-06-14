@@ -19,16 +19,26 @@ var twilio = require('twilio'),
 exports.help = function(request, response, next){
   var tokens = request.body.Body.split(" ");
   console.log('[TEXT] \'cmds\' detected:'.green, request.body.Body.green);
-  console.log('[DEBUG] TEXT FROM:',request.body.From);
   // log.debug('[TEXT] \'cmds\' detected:', request.body.Body);
   if (tokens[0].toLowerCase() == 'cmds'){
     var body = 'Commands:\n'
         + 'cmds | Returns a list of available commands.\n'
         + 'TODO | Add more commands.';
+    console.log('[DEBUG] TEXT FROM:',request.body.From);
     client.messages.create({
       to: request.body.From,
       from: constants.from_phone,
       body: body, 
+    }, function(err, message) {
+      console.log('[ERROR]', err);
+      // log.error(err);
+      client.messages.create({
+        to: request.body.From,
+        from: constants.from_phone,
+        body: 'Command failed. GG.',
+      }, function(err, message) {
+        console.log('[ERROR] Command failed. GG. NO RE.'.red);
+      });
     });
   } else {
     next();
@@ -37,10 +47,20 @@ exports.help = function(request, response, next){
 
 exports.invalid = function(request, response){
   console.log('[TEXT] \'invalid\' detected:'.red, request.body.Body.red);
-  var body = 'Invalid input: ' + request.body.Body + '.\nPlease text \'cmds\' to get list of available commands.'
+  var body = 'Invalid input: ' + request.body.Body + '.\nPlease type \'cmds\' to get list of available commands.'
   client.messages.create({
     to: request.body.From,
     from: constants.from_phone,
     body: body, 
+  }, function(err, message) {
+    console.log('[ERROR]', err);
+    // log.error(err);
+    client.messages.create({
+      to: request.body.From,
+      from: constants.from_phone,
+      body: 'Command failed. GG.',
+    }, function(err, message) {
+      console.log('[ERROR] Command failed. GG. NO RE.'.red);
+    });
   });
 }
