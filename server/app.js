@@ -32,6 +32,7 @@ app.use(bodyParser.urlencoded({extended : false}));
 
 app.post('/sms',
   responder.help,
+  responder.reddit,
   responder.google,
   responder.invalid
 );
