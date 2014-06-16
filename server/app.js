@@ -7,7 +7,7 @@ var express = require('express'),
     log = require('bunyan').createLogger(
       {
         name: 'text2know',
-        streamskey: "value",  [{
+        streams: [{
           level: 'debug',
           path: '/home/ubuntu/text2know/server/logs/text2know.log'
         },
