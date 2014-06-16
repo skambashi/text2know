@@ -16,6 +16,7 @@ exports.help = function(request, response, next){
   if (tokens[0].toLowerCase() == 'cmds'){
     var body = 'Commands:\n'
         + 'cmds || Returns a list of available commands.\n'
+        + 'reddit <subreddit> <amount> || Returns <amount> titles from <subreddit> subreddit. (Use \'front\' for homepage results)\n'
         + 'google <query> <amount> || Returns <amount> results from google search of <query>.\n'
         + 'TODO || Add more commands.';
 
@@ -34,9 +35,9 @@ exports.reddit = function(request, response, next){
 
   var tokens = request.body.Body.split(" ");
   if (tokens[0].toLowerCase() == 'reddit'){
-    var query = tokens[1];
-    var results = tokens[2];
-    console.log('[DEBUG] Reddit', results, 'results for', query);
+    var subreddit = tokens[1];
+    var amount = tokens[2];
+    console.log('[DEBUG] Reddit', amount, 'results for', subreddit);
     var body = '';
     if (tokens[1] == 'front'){
       restler.get('http://reddit.com/.json').on('complete', function(reddit) {
@@ -45,7 +46,7 @@ exports.reddit = function(request, response, next){
         }
       });
     }else{
-      restler.get('http://reddit.com/' + query + '/.json').on('complete', function(reddit) {
+      restler.get('http://reddit.com/' + subreddit + '/.json').on('complete', function(reddit) {
         for(var i=0; i<resuts; i++) {
             body += reddit.data.children[i].data.title;
         }
@@ -68,9 +69,9 @@ exports.google = function(request, response, next){
   var tokens = request.body.Body.split(" ");
   if (tokens[0].toLowerCase() == 'google'){
     var query = tokens.slice(1, -1).join(' ');
-    var results = tokens[tokens.length - 1];
-    console.log('[DEBUG] Google', results, 'results for', query);
-    var body = 'Google ' + results + ' results for ' + query;
+    var amount = tokens[tokens.length - 1];
+    console.log('[DEBUG] Google', amount, 'results for', query);
+    var body = 'Google ' + amount + ' results for ' + query;
 
     client.messages.create({
       to: request.body.From,
