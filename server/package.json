@@ -11,7 +11,8 @@
     "bunyan": "0.23.1",
     "twilio": "1.6.0",
     "colors": "0.6.2",
-    "daemon": "1.1.0"
+    "daemon": "1.1.0",
+    "restler": "3.2.2"
   },
   "author": "skambashi",
   "license": "MIT"

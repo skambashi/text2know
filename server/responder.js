@@ -1,7 +1,7 @@
 var twilio = require('twilio'),
     constants = require('./../../constants'),
     client = require('twilio')(constants.twilio_sid, constants.auth_token),
-    reddit = require('./apps/google'),
+    restler = require('restler'),
     colors = require('colors');
 
 exports.help = function(request, response, next){
@@ -18,6 +18,39 @@ exports.help = function(request, response, next){
         + 'cmds || Returns a list of available commands.\n'
         + 'google <query> <amount> || Returns <amount> results from google search of <query>.\n'
         + 'TODO || Add more commands.';
+
+    client.messages.create({
+      to: request.body.From,
+      from: constants.from_phone,
+      body: body, 
+    });
+  } else {
+    next();
+  }
+}
+
+exports.reddit = function(request, response, next){
+  console.log('[TEXT] \'reddit\''.green);
+
+  var tokens = request.body.Body.split(" ");
+  if (tokens[0].toLowerCase() == 'reddit'){
+    var query = tokens[1];
+    var results = tokens[2];
+    console.log('[DEBUG] Reddit', results, 'results for', query);
+    var body = '';
+    if (tokens[1] == 'front'){
+      restler.get('http://reddit.com/.json').on('complete', function(reddit) {
+        for(var i=0; i<resuts; i++) {
+            body += reddit.data.children[i].data.title;
+        }
+      });
+    }else{
+      restler.get('http://reddit.com/' + query + '/.json').on('complete', function(reddit) {
+        for(var i=0; i<resuts; i++) {
+            body += reddit.data.children[i].data.title;
+        }
+      });
+    }
 
     client.messages.create({
       to: request.body.From,
