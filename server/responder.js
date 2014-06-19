@@ -40,6 +40,7 @@ exports.reddit = function(request, response, next){
 
     if (tokens[1] == 'front'){
       restler.get('http://reddit.com/.json').on('complete', function(reddit) {
+        console.log('Reddit:', reddit);
         for(var i=0; i<amount; i++) {
           client.messages.create({
             to: request.body.From,
@@ -50,6 +51,7 @@ exports.reddit = function(request, response, next){
       });
     }else{
       restler.get('http://reddit.com/r/' + subreddit + '/.json').on('complete', function(reddit) {
+        console.log('Reddit:', reddit);
         for(var i=0; i<amount; i++) {
           client.messages.create({
             to: request.body.From,
