@@ -38,26 +38,28 @@ exports.reddit = function(request, response, next){
     var subreddit = tokens[1];
     var amount = tokens[2];
     console.log('[DEBUG] Reddit', amount, 'results for', subreddit);
-    var body = '';
+
     if (tokens[1] == 'front'){
       restler.get('http://reddit.com/.json').on('complete', function(reddit) {
         for(var i=0; i<amount; i++) {
-            body += reddit.data.children[i].data.title;
+          client.messages.create({
+            to: request.body.From,
+            from: constants.from_phone,
+            body: reddit.data.children[i].data.title, 
+          });
         }
       });
     }else{
       restler.get('http://reddit.com/' + subreddit + '/.json').on('complete', function(reddit) {
         for(var i=0; i<amount; i++) {
-            body += reddit.data.children[i].data.title;
+          client.messages.create({
+            to: request.body.From,
+            from: constants.from_phone,
+            body: reddit.data.children[i].data.title, 
+          });
         }
       });
     }
-    console.log('[DEBUG]', body);
-    client.messages.create({
-      to: request.body.From,
-      from: constants.from_phone,
-      body: body, 
-    });
   } else {
     next();
   }
