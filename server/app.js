@@ -1,5 +1,5 @@
 // To run node app in background of server, daemonize.
-require('daemon')();
+//require('daemon')();
 
 // Initialize dependancies.
 var express = require('express'),
