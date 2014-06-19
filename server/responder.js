@@ -37,7 +37,6 @@ exports.reddit = function(request, response, next){
   if (tokens[0].toLowerCase() == 'reddit'){
     var subreddit = tokens[1];
     var amount = tokens[2];
-    console.log('[DEBUG] Reddit', amount, 'results for', subreddit);
 
     if (tokens[1] == 'front'){
       restler.get('http://reddit.com/.json').on('complete', function(reddit) {
@@ -50,7 +49,7 @@ exports.reddit = function(request, response, next){
         }
       });
     }else{
-      restler.get('http://reddit.com/' + subreddit + '/.json').on('complete', function(reddit) {
+      restler.get('http://reddit.com/r/' + subreddit + '/.json').on('complete', function(reddit) {
         for(var i=0; i<amount; i++) {
           client.messages.create({
             to: request.body.From,
