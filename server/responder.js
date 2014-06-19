@@ -41,22 +41,25 @@ exports.reddit = function(request, response, next){
     var body = '';
     if (tokens[1] == 'front'){
       restler.get('http://reddit.com/.json').on('complete', function(reddit) {
+	console.log('Inside front, reddit:', reddit);
         for(var i=0; i<amount; i++) {
-            body += reddit.data.children[i].data.title;
+            body += reddit.data.children[i].data.title + '\n';
+            console.log(body);
         }
       });
     }else{
       restler.get('http://reddit.com/' + subreddit + '/.json').on('complete', function(reddit) {
+	console.log('Inside', subreddit, 'reddit:', reddit);
         for(var i=0; i<amount; i++) {
-            body += reddit.data.children[i].data.title;
+            body += reddit.data.children[i].data.title + '\n';
         }
       });
     }
-    console.log('[DEBUG]', body);
+    console.log('[DEBUG] Body:', body);
     client.messages.create({
       to: request.body.From,
       from: constants.from_phone,
-      body: body, 
+      body: body 
     });
   } else {
     next();
