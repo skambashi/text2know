@@ -46,6 +46,12 @@ app.get('/', function(request, response) {
 
 /**************************** CSS/JS ROUTES FROM HERE ********************************/
 
+app.get('/static/font-awesome/css/:file', function(request, response) {
+  console.log('[CSS] GET request: \'/static/font-awesome/css/%s\''.yellow, request.params.file.yellow);
+  log.debug('[CSS] GET request: \'/static/font-awesome/css/%s\'', request.params.file);
+  hg.genCss(response, request.params.file);
+});
+
 app.get('/static/css/:file', function(request, response) {
   console.log('[CSS] GET request: \'/static/css/%s\''.yellow, request.params.file.yellow);
   log.debug('[CSS] GET request: \'/static/css/%s\'', request.params.file);
