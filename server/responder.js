@@ -114,7 +114,6 @@ exports.gmap = function(req, res, next){
           steps = leg.steps;
           for (var j = 0; j < steps.length; j++){
             console.log('[STEP]', steps[j]);
-            console.log(steps[j].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[j].distance.text + ')');
             directions.push(steps[j].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[j].distance.text + ')');
           }
 
@@ -124,7 +123,7 @@ exports.gmap = function(req, res, next){
             client.messages.create({
               to: req.body.From,
               from: constants.from_phone,
-              body: directions[x],
+              body: '' + x + '. ' + directions[x],
             });
           }
         } else {
