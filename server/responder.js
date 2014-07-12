@@ -112,16 +112,14 @@ exports.gmap = function(req, res, next){
           var directions = [];
           leg = route.legs[0];
 
-          console.log(leg);
-
           for (var i = 0; i < leg.length; i++){
             steps = leg.steps;
             for (var j = 0; j < steps.length; j++){
+              console.log('[DIR]', directions[x]);
               directions.push(steps[i].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[i].distance) + ')';
             }
           }
           for (var x = 0; x < directions.length; x++){
-            console.log('[DIR]', x + '.', directions[x]);
             client.messages.create({
               to: req.body.From,
               from: constants.from_phone,
