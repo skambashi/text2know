@@ -104,12 +104,21 @@ exports.gmap = function(req, res, next){
       } else {
         console.log("Request posted successfully!");
         info = JSON.parse(body);
+
+        console.log(info, body);
+
         route = info.routes[0];
         if (route){
           var directions = [];
           legs = route.legs;
+
+          console.log(legs);
+
           for (var i = 0; i < legs.length; i++){
             steps = legs.steps;
+
+            console.log(steps);
+
             for (var j = 0; j < steps.length; j++){
               directions.push(steps[i].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[i].distance) + ')';
             }
