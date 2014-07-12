@@ -123,7 +123,7 @@ exports.gmap = function(req, res, next){
             client.messages.create({
               to: req.body.From,
               from: constants.from_phone,
-              body: '' + x + '. ' + directions[x],
+              body: '' + (x + 1) + '. ' + directions[x],
             });
           }
         } else {
