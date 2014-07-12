@@ -90,9 +90,10 @@ exports.gmap = function(request, response, next){
     }
     var from = pass[2];
     var to = pass[3];
-
-    request.get({
-      url: 'http://maps.googleapis.com/maps/api/directions/json',
+    console.log(from, to, type);
+    request({
+      uri: 'http://maps.googleapis.com/maps/api/directions/json',
+      method: 'POST',
       form: {
         origin: from,
         destination: to,
