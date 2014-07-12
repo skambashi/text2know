@@ -105,7 +105,7 @@ exports.gmap = function(req, res, next){
         console.log("Request posted successfully!");
         info = JSON.parse(body);
 
-        console.log('[INFO]', info);
+        // console.log('[INFO]', info);
 
         route = info.routes[0];
         if (route){
@@ -113,7 +113,7 @@ exports.gmap = function(req, res, next){
           leg = route.legs[0];
           steps = leg.steps;
           for (var j = 0; j < steps.length; j++){
-            console.log('[STEP]', steps[j]);
+            // console.log('[STEP]', steps[j]);
             directions.push(steps[j].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[j].distance.text + ')');
           }
 
