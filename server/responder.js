@@ -5,14 +5,14 @@ var client = require('twilio')(constants.twilio_sid, constants.auth_token);
 var restler = require('restler');
 var colors = require('colors');
 
-exports.help = function(request, response, next){
-  console.log('[TEXT] SMS detected:'.green, request.body.Body.green);
-  console.log('[TEXT] From:'.green,request.body.From.green);
-  console.log('[TEXT] Body:'.green,request.body.Body.green);
+exports.help = function(req, res, next){
+  console.log('[TEXT] SMS detected:'.green, req.body.Body.green);
+  console.log('[TEXT] From:'.green,req.body.From.green);
+  console.log('[TEXT] Body:'.green,req.body.Body.green);
 
   console.log('[TEXT] \'cmds\''.green);
 
-  var tokens = request.body.Body.split(" ");
+  var tokens = req.body.Body.split(" ");
 
   if (tokens[0].toLowerCase() == 'cmds'){
     var body = 'Commands:\n'
@@ -22,7 +22,7 @@ exports.help = function(request, response, next){
         + 'TODO || Add more commands.';
 
     client.messages.create({
-      to: request.body.From,
+      to: req.body.From,
       from: constants.from_phone,
       body: body, 
     });
@@ -31,10 +31,10 @@ exports.help = function(request, response, next){
   }
 }
 
-exports.reddit = function(request, response, next){
+exports.reddit = function(req, res, next){
   console.log('[TEXT] \'reddit\''.green);
 
-  var tokens = request.body.Body.split(" ");
+  var tokens = req.body.Body.split(" ");
   if (tokens[0].toLowerCase() == 'reddit'){
     var subreddit = tokens[1];
     var amount = tokens[2];
@@ -44,7 +44,7 @@ exports.reddit = function(request, response, next){
         console.log('Reddit:', reddit);
         for(var i=0; i<amount; i++) {
           client.messages.create({
-            to: request.body.From,
+            to: req.body.From,
             from: constants.from_phone,
             body: reddit.data.children[i].data.title, 
           });
@@ -67,10 +67,10 @@ exports.reddit = function(request, response, next){
   }
 }
 
-exports.gmap = function(request, response, next){
+exports.gmap = function(req, res, next){
   console.log('[TEXT] \'gmap\''.green);
   var re = /gmap|gm (d|w|b|t) from (.+) to (.+)/;
-  var body = request.body.Body;
+  var body = req.body.Body;
   var pass = re.exec(body);
   if (pass){
     var type = pass[1];
@@ -110,10 +110,10 @@ exports.gmap = function(request, response, next){
   }
 }
 
-exports.google = function(request, response, next){
+exports.google = function(req, res, next){
   console.log('[TEXT] \'google\''.green);
 
-  var tokens = request.body.Body.split(" ");
+  var tokens = req.body.Body.split(" ");
   if (tokens[0].toLowerCase() == 'google'){
     var query = tokens.slice(1, -1).join(' ');
     var amount = tokens[tokens.length - 1];
@@ -121,7 +121,7 @@ exports.google = function(request, response, next){
     var body = 'Google ' + amount + ' results for ' + query;
 
     client.messages.create({
-      to: request.body.From,
+      to: req.body.From,
       from: constants.from_phone,
       body: body, 
     });
@@ -130,11 +130,11 @@ exports.google = function(request, response, next){
   }
 }
 
-exports.invalid = function(request, response){
+exports.invalid = function(req, res){
   console.log('[TEXT] \'invalid\'');
-  var body = 'Invalid input: ' + request.body.Body + '.\nPlease type \'cmds\' to get list of available commands.'
+  var body = 'Invalid input: ' + req.body.Body + '.\nPlease type \'cmds\' to get list of available commands.'
   client.messages.create({
-    to: request.body.From,
+    to: req.body.From,
     from: constants.from_phone,
     body: body, 
   });
