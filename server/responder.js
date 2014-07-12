@@ -112,7 +112,7 @@ exports.gmap = function(req, res, next){
           var directions = [];
           leg = route.legs[0];
 
-          console.log(legs);
+          console.log(leg);
 
           for (var i = 0; i < leg.length; i++){
             steps = leg.steps;
