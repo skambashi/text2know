@@ -1,4 +1,5 @@
 var twilio = require('twilio'),
+    request = require('request'),
     constants = require('./../../constants'),
     client = require('twilio')(constants.twilio_sid, constants.auth_token),
     restler = require('restler'),
@@ -62,6 +63,49 @@ exports.reddit = function(request, response, next){
       });
     }
   } else {
+    next();
+  }
+}
+
+exports.gmap = function(request, response, next){
+  console.log('[TEXT] \'gmap\''.green);
+  var re = /gmap|gm (d|w|b|t) from (.+) to (.+)/;
+  var body = request.body.Body;
+  var pass = re.exec(body);
+  if (pass){
+    var type = pass[1];
+    switch (type){
+      case 'd':
+        type = 'driving';
+        break;
+      case 'w':
+        type = 'walking';
+        break;
+      case 'b':
+        type = 'bicycling';
+        break;
+      case 't':
+        type = 'transit';
+        break;
+    }
+    var from = pass[2];
+    var to = pass[3];
+
+    request.get({
+      url: 'http://maps.googleapis.com/maps/api/directions/json',
+      form: {
+        origin: from,
+        destination: to,
+        mode: type,
+      }
+    }, function(error, response, body){
+      if (error){
+        console.log("There was an error:", error);
+      } else {
+        console.log("Request posted successfully!", body);
+      }
+    });
+  } else{ 
     next();
   }
 }

@@ -12,7 +12,8 @@
     "twilio": "1.6.0",
     "colors": "0.6.2",
     "daemon": "1.1.0",
-    "restler": "3.2.2"
+    "restler": "3.2.2",
+    "request": "2.37.0",
   },
   "author": "skambashi",
   "license": "MIT"
