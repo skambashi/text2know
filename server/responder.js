@@ -115,11 +115,12 @@ exports.gmap = function(req, res, next){
           for (var i = 0; i < leg.length; i++){
             steps = leg.steps;
             for (var j = 0; j < steps.length; j++){
-              directions.push(steps[i].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[i].distance.text) + ')';
+              console.log(steps[i].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[i].distance.text) + ')');
+              directions.push(steps[i].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[i].distance.text) + ')');
             }
           }
+          console.log(directions);
           for (var x = 0; x < directions.length; x++){
-            console.log(directions[x]);
             client.messages.create({
               to: req.body.From,
               from: constants.from_phone,
