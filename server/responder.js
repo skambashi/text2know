@@ -115,8 +115,8 @@ exports.gmap = function(req, res, next){
           for (var i = 0; i < leg.length; i++){
             steps = leg.steps;
             for (var j = 0; j < steps.length; j++){
-              console.log(steps[i].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[i].distance.text) + ')');
-              directions.push(steps[i].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[i].distance.text) + ')');
+              console.log(steps[i].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[i].distance.text + ')');
+              directions.push(steps[i].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[i].distance.text + ')');
             }
           }
           console.log(directions);
