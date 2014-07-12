@@ -118,7 +118,7 @@ exports.gmap = function(req, res, next){
             client.messages.create({
               to: req.body.From,
               from: constants.from_phone,
-              body: String(x) + '. ' directions[x],
+              body: directions[x],
             });
           }
         } else {
