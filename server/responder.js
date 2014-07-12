@@ -102,7 +102,32 @@ exports.gmap = function(req, res, next){
       if (error){
         console.log("There was an error:", error);
       } else {
-        console.log("Request posted successfully!", body);
+        console.log("Request posted successfully!");
+        info = JSON.parse(body);
+        route = info.routes[0];
+        if (route){
+          var directions = [];
+          legs = route.legs;
+          for (var i = 0; i < legs.length; i++){
+            steps = legs.steps;
+            for (var j = 0; j < steps.length; j++){
+              directions.push(steps[i].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[i].distance) + ')';
+            }
+          }
+          for (var x = 0; x < directions.length; x++){
+            client.messages.create({
+              to: req.body.From,
+              from: constants.from_phone,
+              body: x + '. ' directions[x],
+            });
+          }
+        } else {
+          client.messages.create({
+            to: req.body.From,
+            from: constants.from_phone,
+            body: 'No route was found.', 
+          });
+        }
       }
     });
   } else{ 
