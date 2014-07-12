@@ -1,9 +1,9 @@
-var twilio = require('twilio'),
-    request = require('request'),
-    constants = require('./../../constants'),
-    client = require('twilio')(constants.twilio_sid, constants.auth_token),
-    restler = require('restler'),
-    colors = require('colors');
+var twilio = require('twilio');
+var request = require("request");
+var constants = require('./../../constants');
+var client = require('twilio')(constants.twilio_sid, constants.auth_token);
+var restler = require('restler');
+var colors = require('colors');
 
 exports.help = function(request, response, next){
   console.log('[TEXT] SMS detected:'.green, request.body.Body.green);
@@ -91,9 +91,8 @@ exports.gmap = function(request, response, next){
     var from = pass[2];
     var to = pass[3];
     console.log(from, to, type);
-    request({
+    request.post({
       uri: 'http://maps.googleapis.com/maps/api/directions/json',
-      method: 'POST',
       form: {
         origin: from,
         destination: to,
