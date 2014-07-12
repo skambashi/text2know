@@ -91,7 +91,7 @@ exports.gmap = function(req, res, next){
     var from = pass[2];
     var to = pass[3];
     console.log(from, to, type);
-    request.post({
+    request.get({
       uri: 'http://maps.googleapis.com/maps/api/directions/json',
       form: {
         origin: from,
