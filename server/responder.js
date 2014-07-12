@@ -105,25 +105,23 @@ exports.gmap = function(req, res, next){
         console.log("Request posted successfully!");
         info = JSON.parse(body);
 
-        console.log(info, body);
+        console.log('[INFO]', info);
 
         route = info.routes[0];
         if (route){
           var directions = [];
-          legs = route.legs;
+          leg = route.leg[0];
 
           console.log(legs);
 
-          for (var i = 0; i < legs.length; i++){
-            steps = legs.steps;
-
-            console.log(steps);
-
+          for (var i = 0; i < leg.length; i++){
+            steps = leg.steps;
             for (var j = 0; j < steps.length; j++){
               directions.push(steps[i].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[i].distance) + ')';
             }
           }
           for (var x = 0; x < directions.length; x++){
+            console.log('[DIR]', x + '.', directions[x]);
             client.messages.create({
               to: req.body.From,
               from: constants.from_phone,
