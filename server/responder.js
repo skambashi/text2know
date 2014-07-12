@@ -110,7 +110,7 @@ exports.gmap = function(req, res, next){
         route = info.routes[0];
         if (route){
           var directions = [];
-          leg = route.leg[0];
+          leg = route.legs[0];
 
           console.log(legs);
 
