@@ -111,17 +111,15 @@ exports.gmap = function(req, res, next){
         if (route){
           var directions = [];
           leg = route.legs[0];
-
-          for (var i = 0; i < leg.length; i++){
-            steps = leg.steps;
-            console.log('[STEPS]', steps);
-            for (var j = 0; j < steps.length; j++){
-              console.log('[ST]', steps[j]);
-              console.log(steps[j].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[j].distance.text + ')');
-              directions.push(steps[j].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[j].distance.text + ')');
-            }
+          steps = leg.steps;
+          for (var j = 0; j < steps.length; j++){
+            console.log('[STEP]', steps[j]);
+            console.log(steps[j].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[j].distance.text + ')');
+            directions.push(steps[j].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[j].distance.text + ')');
           }
-          console.log(directions);
+
+          console.log('[DIRECTIONS]', directions);
+
           for (var x = 0; x < directions.length; x++){
             client.messages.create({
               to: req.body.From,
