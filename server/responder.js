@@ -5,167 +5,125 @@ var client = require('twilio')(constants.twilio_sid, constants.auth_token);
 var restler = require('restler');
 var colors = require('colors');
 
-exports.help = function(req, res, next){
-  console.log('[TEXT] SMS detected:'.green, req.body.Body.green);
-  console.log('[TEXT] From:'.green,req.body.From.green);
-  console.log('[TEXT] Body:'.green,req.body.Body.green);
+exports.help = function(user_num, server_num) {
+  console.log('[TEXT_HELP]'.yellow);
 
-  console.log('[TEXT] \'cmds\''.green);
+  var body = 'help : Returns a list of available commands.\n'
+    + 'reddit <subreddit> <amount> : Returns <amount> titles from <subreddit> subreddit.\n'
+    + 'gmap <d|w|b|t> from <origin> to <destination> : Returns <amount> results from google search of <query>.';
 
-  var tokens = req.body.Body.split(" ");
-
-  if (tokens[0].toLowerCase() == 'cmds'){
-    var body = 'Commands:\n'
-        + 'cmds || Returns a list of available commands.\n'
-        + 'reddit <subreddit> <amount> || Returns <amount> titles from <subreddit> subreddit. (Use \'front\' for homepage results)\n'
-        + 'google <query> <amount> || Returns <amount> results from google search of <query>.\n'
-        + 'TODO || Add more commands.';
-
-    client.messages.create({
-      to: req.body.From,
-      from: constants.from_phone,
-      body: body, 
-    });
-  } else {
-    next();
-  }
-}
-
-exports.reddit = function(req, res, next){
-  console.log('[TEXT] \'reddit\''.green);
-
-  var tokens = req.body.Body.split(" ");
-  if (tokens[0].toLowerCase() == 'reddit'){
-    var subreddit = tokens[1];
-    var amount = tokens[2];
-
-    if (tokens[1] == 'front'){
-      restler.get('http://reddit.com/.json').on('complete', function(reddit) {
-        console.log('Reddit:', reddit);
-        for(var i=0; i<amount; i++) {
-          client.messages.create({
-            to: req.body.From,
-            from: constants.from_phone,
-            body: reddit.data.children[i].data.title, 
-          });
-        }
-      });
-    }else{
-      restler.get('http://reddit.com/r/' + subreddit + '/.json').on('complete', function(reddit) {
-        console.log('Reddit:', reddit);
-        for(var i=0; i<amount; i++) {
-          client.messages.create({
-            to: request.body.From,
-            from: constants.from_phone,
-            body: reddit.data.children[i].data.title, 
-          });
-        }
-      });
-    }
-  } else {
-    next();
-  }
-}
-
-exports.gmap = function(req, res, next){
-  console.log('[TEXT] \'gmap\''.green);
-  var re = /gmap|gm (d|w|b|t) from (.+) to (.+)/;
-  var body = req.body.Body;
-  var pass = re.exec(body);
-  if (pass){
-    var type = pass[1];
-    switch (type){
-      case 'd':
-        type = 'driving';
-        break;
-      case 'w':
-        type = 'walking';
-        break;
-      case 'b':
-        type = 'bicycling';
-        break;
-      case 't':
-        type = 'transit';
-        break;
-    }
-    var from = pass[2];
-    var to = pass[3];
-    console.log(from, to, type);
-    request({
-      url: 'http://maps.googleapis.com/maps/api/directions/json',
-      qs: {
-        origin: from,
-        destination: to,
-        mode: type,
-      }
-    }, function(error, response, body){
-      if (error){
-        console.log("There was an error:", error);
-      } else {
-        console.log("Request posted successfully!");
-        info = JSON.parse(body);
-
-        // console.log('[INFO]', info);
-
-        route = info.routes[0];
-        if (route){
-          var directions = [];
-          leg = route.legs[0];
-          steps = leg.steps;
-          for (var j = 0; j < steps.length; j++){
-            // console.log('[STEP]', steps[j]);
-            directions.push(steps[j].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[j].distance.text + ')');
-          }
-
-          console.log('[DIRECTIONS]', directions);
-
-          for (var x = 0; x < directions.length; x++){
-            client.messages.create({
-              to: req.body.From,
-              from: constants.from_phone,
-              body: '' + (x + 1) + '. ' + directions[x],
-            });
-          }
-        } else {
-          client.messages.create({
-            to: req.body.From,
-            from: constants.from_phone,
-            body: 'No route was found.', 
-          });
-        }
-      }
-    });
-  } else{ 
-    next();
-  }
-}
-
-exports.google = function(req, res, next){
-  console.log('[TEXT] \'google\''.green);
-
-  var tokens = req.body.Body.split(" ");
-  if (tokens[0].toLowerCase() == 'google'){
-    var query = tokens.slice(1, -1).join(' ');
-    var amount = tokens[tokens.length - 1];
-    console.log('[DEBUG] Google', amount, 'results for', query);
-    var body = 'Google ' + amount + ' results for ' + query;
-
-    client.messages.create({
-      to: req.body.From,
-      from: constants.from_phone,
-      body: body, 
-    });
-  } else {
-    next();
-  }
-}
-
-exports.invalid = function(req, res){
-  console.log('[TEXT] \'invalid\'');
-  var body = 'Invalid input: ' + req.body.Body + '.\nPlease type \'cmds\' to get list of available commands.'
   client.messages.create({
-    to: req.body.From,
-    from: constants.from_phone,
-    body: body, 
+    to: user_num,
+    from: server_num,
+    body: body
   });
 }
+
+exports.reddit = function(user_num, server_num, subreddit, amount) {
+  console.log('[TEXT_REDDIT]'.yellow);
+
+  var url = 'http://reddit.com/r/' + subreddit + '/.json';
+
+  // If the user has specified for results from the front page, use specific url
+  if (subreddit == 'front') {
+    url = 'http://reddit.com/.json';
+  }
+  // restler.get(url).on('complete', function(reddit) {
+  //     console.log(('[TEXT_REDDIT] REDDIT RESPONSE: ' + reddit).yellow);
+  //     for (var i = 0; i < amount; i++) {
+  //       client.messages.create({
+  //           to: user_num,
+  //           from: server_num,
+  //           body: reddit.data.children[i].data.title,
+  //       });
+  //     }
+  //   });
+  // }
+  request({
+    url: url
+  }, function(error, response, body) {
+    if (error) {
+      console.log(("[TEXT_REDDIT_ERR] URL: " + url + " ERR:" + error).red);
+    } else {
+      info = JSON.parse(body);
+      console.log(("[TEXT_REDDIT_SUCCESS] " + info).green);
+      for (var i = 0; i < amount; i++) {
+        client.messages.create({
+          to: user_num,
+          from: server_num,
+          body: info.data.children[i].data.title
+        });
+      }
+    }
+  });
+}
+
+exports.gmap = function(user_num, server_num, type, from, to) {
+  console.log('[TEXT_GMAP]'.yellow);
+  switch (type) {
+    case 'd':
+      type = 'driving';
+      break;
+    case 'w':
+      type = 'walking';
+      break;
+    case 'b':
+      type = 'bicycling';
+      break;
+    case 't':
+      type = 'transit';
+      break;
+  }
+  request({
+    url: 'http://maps.googleapis.com/maps/api/directions/json',
+    qs: {
+      origin: from,
+      destination: to,
+      mode: type
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log(("[TEXT_GMAP_ERR] PARAMS: " + from + ", " + to + ", " + type + " ERR: " + error).red);
+    } else {
+      info = JSON.parse(body);
+      route = info.routes[0];
+      if (route) {
+        var directions = [];
+        leg = route.legs[0];
+        steps = leg.steps;
+        for (var j = 0; j < steps.length; j++) {
+          directions.push(steps[j].html_instructions.replace(/<[^>]+>/g, '') + ' (' + steps[j].distance.text + ')');
+        }
+
+        console.log(('[TEXT_GMAP_SUCCESS] DIRECTIONS: ' + directions).green);
+
+        for (var x = 0; x < directions.length; x++) {
+          client.messages.create({
+            to: user_num,
+            from: server_num,
+            body: '' + (x + 1) + '. ' + directions[x],
+          });
+        }
+      } else {
+        console.log("[TEXT_GMAP_NO_ROUTE_FOUND] FROM:", from, "TO:", to);
+        client.messages.create({
+          to: user_num,
+          from: server_num,
+          body: 'No route was found.',
+        });
+      }
+    }
+  });
+}
+
+exports.invalid = function(user_num, server_num, msg) {
+  console.log('[TEXT_ERR]'.red);
+  var body = 'Invalid input: ' + msg + '.\nPlease type \'help\' to get list of available commands.'
+  client.messages.create({
+    to: user_num,
+    from: server_num,
+    body: body,
+  });
+}
+
+// TODO: GOOGLE SEARCH, DICTIONARY, WEATHER
